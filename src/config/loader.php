@@ -2,7 +2,7 @@
 
 function loadModel($modelName)
 {
-    require_once(MODEL_PATH . "/${modelName}.php");
+    require_once(MODEL_PATH . "/{$modelName}.php");
 }
 
 function loadView($viewName, $params = array())
@@ -14,6 +14,5 @@ function loadView($viewName, $params = array())
             }
         }
     }
-
-    require_once(VIEW_PATH . "/${viewName}.php");
+    require_once(VIEW_PATH . "/{$viewName}.php");
 }
