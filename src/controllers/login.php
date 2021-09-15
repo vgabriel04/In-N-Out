@@ -6,7 +6,7 @@ if (count($_POST) > 0) {
     $login =  new Login($_POST);
     try {
         $user = $login->checkLogin();
-        echo "Usuário {$user->name} logado";
+        header("Location: /day_records");
     } catch (Exception $e) {
         $exception = $e;
         // echo "Falha no login: $exception";
@@ -15,4 +15,6 @@ if (count($_POST) > 0) {
     }
 }
 
-loadView('login', $_POST + ['exception' =>$exception]);
+loadView('login', $_POST + [
+    'exception' => $exception,
+]);
