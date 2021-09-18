@@ -1,7 +1,8 @@
 <?php
 $errors = [];
+$exception = null; //ver essa exception
 
-if ($exception) {
+if ($exception ) {
     $message = [
         'type' => 'error',
         'message' => $exception->getMessage()

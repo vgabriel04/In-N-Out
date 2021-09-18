@@ -23,4 +23,31 @@ class Database
         $statement->execute();
         return $statement;
     }
+
+    public static function executeSQL($sql)
+    {
+        $conn = self::getConnection();
+        $statement = $conn->prepare($sql);
+        $statement->execute();
+
+
+        $achouinsert = strstr($sql, 'insert');
+        $achouInsertGrande = strpos($sql, 'INSERT');
+
+        if ($achouinsert !== false || $achouInsertGrande !== false) {
+            $id = $conn->lastInsertId();
+            return $id;
+        }
+        return null;
+    }
+
+    // public static function executeSQL($sql) {
+    //     $conn = self::getConnection();
+    //     if(!mysqli_query($conn, $sql)) {
+    //         throw new Exception(mysqli_error($conn));
+    //     }
+    //     $id = $conn->insert_id;
+    //     $conn->close();
+    //     return $id;
+    // }
 }

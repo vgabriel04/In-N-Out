@@ -61,6 +61,34 @@ class Model
         }
     }
 
+    public function insert()
+    {
+        //removo a coluna id da lista de colunas para não considerar no insert
+        $colunas =  static::$columns;
+        foreach ($colunas as $key => $coluna) {
+            if ($coluna == 'id') {
+                unset($colunas[$key]);
+            }
+        }
+        $sql = "INSERT INTO " . static::$tableName . " (" . implode(",", $colunas) . ") VALUES (";
+        foreach ($colunas as $col) {
+            $sql .= static::getFormatedValue($this->$col) . ",";
+        }
+        $sql[strlen($sql) - 1] = ')';
+        $id = Database::executeSQL($sql);
+        $this->id = $id;
+    }
+
+    public function update(){
+        $sql = "UPDATE " . static::$tableName . " SET ";
+        foreach (static::$columns as $col) {
+            $sql .= "${col} = " . static::getFormatedValue($this->$col) . ",";
+        }
+        $sql[strlen($sql) - 1] = ' ';
+        $sql = "WHERE id = {$this->id}";
+        Database::executeSQL($sql);
+    }
+
     private static function getFilters($filters)
     {
         $sql = '';

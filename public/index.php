@@ -10,7 +10,7 @@ $uri = str_replace('/', '', $uri);
 // $uri = str_replace('.php', '', $uri);
 
 if ($uri === '/' || $uri === '' || $uri === 'index.php') {
-    $uri = 'login';
+    $uri = 'day_records';
 }
 
 require_once(CONTROLLER_PATH . "/{$uri}.php");
