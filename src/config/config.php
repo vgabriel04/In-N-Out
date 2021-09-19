@@ -19,6 +19,7 @@ require_once(CONFIG_PATH . '/database.php');
 require_once(CONFIG_PATH . '/loader.php');
 require_once(CONFIG_PATH . '/session.php');
 require_once(CONFIG_PATH . '/date_utils.php');
+require_once(CONFIG_PATH . '/utils.php');
 require_once(realpath(MODEL_PATH . '/Model.php'));
 require_once(realpath(MODEL_PATH . '/User.php'));
 require_once(realpath(EXCEPTION_PATH . '/AppException.php'));

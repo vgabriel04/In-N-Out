@@ -1,11 +1,11 @@
 <main class="content">
     <?php
-        renderTitle(
-            'Registrar Ponto',
-            'Mantenha seu ponto conscistente!',
-            'icofont-check-alt'
-        );
-        include(TEMPLATE_PATH . "/messages.php");
+    renderTitle(
+        'Registrar Ponto',
+        'Mantenha seu ponto conscistente!',
+        'icofont-check-alt'
+    );
+    include(TEMPLATE_PATH . "/messages.php");
     ?>
     <div class="card">
         <div class="card-header">
@@ -22,11 +22,22 @@
                 <span class="record">Saída 2: <?= $records->time4 ?? '---' ?></span>
             </div>
         </div>
-        <div class="card-footer d-flex justify-content-around">
-            <a href="???" class="btn btn-success btn-lg">
+        <div class="card-footer d-flex justify-content-center">
+            <a href="/innout" class="btn btn-success btn-lg">
                 <i class="icofont-check mr-1"></i>
                 Bater o Ponto
             </a>
-        </ddiv>
+        </div>
     </div>
+
+
+    <form class="mt-5" action="/innout" method="post">
+        <div class="input-group no-border">
+            <input type="text" name="forcedTime" class="form-control" placeholder="Informe a hora para simular o batimento">
+            <button class="btn btn-danger ml-3">
+                Simular Ponto
+            </button>
+        </div>
+    </form>
+
 </main>

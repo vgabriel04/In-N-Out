@@ -1,31 +1,33 @@
 <?php
 $errors = [];
-$exception = null; //ver essa exception
+$message = [
+    'type' => '',
+    'message' => ''
+];
 
-if ($exception ) {
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']);
+} elseif (isset($exception)) {
     $message = [
         'type' => 'error',
         'message' => $exception->getMessage()
     ];
-
     if (get_class($exception) === 'ValidationException') {
         $errors = $exception->getErrors();
     }
 }
 
-if (isset($message)) {
+$alertType = '';
 
-    $alertType = '';
-
-    if ($message['type'] === 'error') {
-        $alertType = 'danger';
-    } else {
-        $alertType = 'success';
-    }
+if ($message['type'] === 'error') {
+    $alertType = 'danger';
+} elseif ($message['type'] === 'success') {
+    $alertType = 'success';
 }
 ?>
 
-<?php if (isset($message)) : ?>
+<?php if (isset($message['message'])) : ?>
     <div role="alert" class="my-3 alert alert-<?= $alertType ?>">
         <?= $message['message'] ?>
     </div>

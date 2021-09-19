@@ -29,8 +29,6 @@ class Database
         $conn = self::getConnection();
         $statement = $conn->prepare($sql);
         $statement->execute();
-
-
         $achouinsert = strstr($sql, 'insert');
         $achouInsertGrande = strpos($sql, 'INSERT');
 

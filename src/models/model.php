@@ -22,6 +22,9 @@ class Model
 
     public function __get($key)
     {
+        if (!isset($this->values[$key])) {
+            return null;
+        }
         return $this->values[$key];
     }
 
@@ -79,13 +82,14 @@ class Model
         $this->id = $id;
     }
 
-    public function update(){
+    public function update()
+    {
         $sql = "UPDATE " . static::$tableName . " SET ";
         foreach (static::$columns as $col) {
-            $sql .= "${col} = " . static::getFormatedValue($this->$col) . ",";
+            $sql .= " ${col} = " . static::getFormatedValue($this->$col) . ",";
         }
         $sql[strlen($sql) - 1] = ' ';
-        $sql = "WHERE id = {$this->id}";
+        $sql .= "WHERE id = {$this->id}";
         Database::executeSQL($sql);
     }
 
@@ -93,9 +97,13 @@ class Model
     {
         $sql = '';
         if (count($filters) > 0) {
-            $sql .= "where 1 = 1";
+            $sql .= " WHERE 1 = 1";
             foreach ($filters as $column => $value) {
-                $sql .= " and ${column} = " . static::getFormatedValue($value);
+                if ($column == 'raw') {
+                    $sql .= " AND {$value}";
+                } else {
+                    $sql .= " AND ${column} = " . static::getFormatedValue($value);
+                }
             }
         }
         return $sql;
