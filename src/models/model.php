@@ -93,6 +93,12 @@ class Model
         Database::executeSQL($sql);
     }
 
+    public static function getCount($filters = []) {
+        $result = static::getResultSetFromSelect(
+            $filters, 'count(*) as count');
+        return $result->fetch(PDO::FETCH_ASSOC)['count'];
+    }
+
     private static function getFilters($filters)
     {
         $sql = '';
