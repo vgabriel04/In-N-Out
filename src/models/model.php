@@ -75,6 +75,7 @@ class Model
         }
         $sql = "INSERT INTO " . static::$tableName . " (" . implode(",", $colunas) . ") VALUES (";
         foreach ($colunas as $col) {
+
             $sql .= static::getFormatedValue($this->$col) . ",";
         }
         $sql[strlen($sql) - 1] = ')';
@@ -93,10 +94,22 @@ class Model
         Database::executeSQL($sql);
     }
 
-    public static function getCount($filters = []) {
+    public static function getCount($filters = [])
+    {
         $result = static::getResultSetFromSelect(
-            $filters, 'count(*) as count');
+            $filters,
+            'count(*) as count'
+        );
         return $result->fetch(PDO::FETCH_ASSOC)['count'];
+    }
+
+    public function delete() {
+        static::deleteById($this->id);
+    }
+
+    public static function deleteById($id) {
+        $sql = "DELETE FROM " . static::$tableName . " WHERE id = {$id}";
+        Database::executeSQL($sql);
     }
 
     private static function getFilters($filters)
@@ -121,6 +134,12 @@ class Model
             return "null";
         } elseif (gettype($value) === 'string') {
             return "'${value}'";
+        } elseif (gettype($value) === 'boolean') {
+            if ($value == false) {
+                return "'false'";
+            } else {
+                return "'true'";
+            }
         } else {
             return $value;
         }

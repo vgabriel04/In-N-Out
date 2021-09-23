@@ -13,4 +13,8 @@ if ($uri === '/' || $uri === '' || $uri === 'index.php') {
     $uri = 'day_records';
 }
 
+
+$uri = explode('?', $uri);
+$uri = $uri[0];
+
 require_once(CONTROLLER_PATH . "/{$uri}.php");
