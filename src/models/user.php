@@ -24,6 +24,13 @@ class User extends Model
         return parent::insert();
     }
 
+    public function update() {
+        $this->validate();
+        if (!$this->end_date) $this->end_date = null;
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        return parent::update();
+    }
+
     private function validate() {
         $errors = [];
 

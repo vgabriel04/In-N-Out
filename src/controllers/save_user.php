@@ -1,30 +1,35 @@
 <?php
 session_start();
-requireValidSession();
-
-// if (!isset($_GET['update'])) {
-//   throw new AppException('Usuario não informado');
-// }
+requireValidSession(true);
 
 $exception = null;
+$userData = [];
 
-if (count($_POST) > 0)
+if(count($_POST) === 0 && isset($_GET['update'])) {
+    $user = User::getOne(['id' => $_GET['update']]);
+    $userData = $user->getValues();
+    $userData['password'] = null;
+} elseif(count($_POST) > 0) {
     try {
-        $newUser = new User($_POST);
+        $dbUser = new User($_POST);
+        if($dbUser->id){
+            $dbUser->update();
+            addSuccessMsg('Usuário alterado com sucesso!');
+        }else{
+            $dbUser->insert();
+            addSuccessMsg('Usuário cadastrado com sucesso!');
+        }
 
         $isAdmin = isset($_POST['is_admin']) ? $_POST['is_admin'] : false;
 
-        // var_dump($isAdmin);
         $isAdmin = $isAdmin == 'on' ? true : false;
-        // var_dump($isAdmin);
         $newUser->is_admin = $isAdmin;
 
-        // var_dump($newUser);
-        $newUser->insert();
-        addSuccessMsg('usuário cadastrado com sucesso!');
         $_POST = [];
     } catch (Exception $e) {
         $exception = $e;
+    }finally {
+        $userData = $_POST;
     }
-
-loadTemplateView('save_user', $_POST + ['exception' => $exception]);
+}
+loadTemplateView('save_user', $userData + ['exception' => $exception]);

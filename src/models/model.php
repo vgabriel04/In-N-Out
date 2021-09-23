@@ -6,16 +6,20 @@ class Model
     protected static $columns = [];
     protected $values = [];
 
-    function __construct($arr)
+    function __construct($arr, $sanitize = true)
     {
-        $this->loadFromArray($arr);
+        $this->loadFromArray($arr, $sanitize);
     }
 
-    public function loadFromArray($arr)
-    {
-        if ($arr) {
-            foreach ($arr as $key => $value) {
-                $this->$key = $value;
+    public function loadFromArray($arr, $sanitize = true) {
+        if($arr) {
+            foreach($arr as $key => $value) {
+                $cleanValue = $value;
+                if($sanitize && isset($cleanValue)) {
+                    $cleanValue = strip_tags(trim($cleanValue));
+                    $cleanValue = htmlentities($cleanValue, ENT_NOQUOTES);
+                }
+                $this->$key = $cleanValue;
             }
         }
     }
@@ -31,6 +35,10 @@ class Model
     public function __set($key, $value)
     {
         $this->values[$key] = $value;
+    }
+
+    public function getValues() {
+        return $this->values;
     }
 
     public static function getOne($filters = [], $columns = '*')
