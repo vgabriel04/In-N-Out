@@ -1,4 +1,4 @@
-# PHPTASK
+# IN N' OUT
 
 Sistema de registro de horários de entrada/saída de funcionários, com sistema de login e validação.
 
